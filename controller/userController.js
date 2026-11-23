@@ -31,24 +31,12 @@ async function register(req, res) {
         password: hashedPassword
     });
 
-    const token = jwt.sign(
-        {
-            id: user.id,
-            email: user.email
-        },
-        process.env.JWT_SECRET,
-        {
-            expiresIn: process.env.JWT_EXPIRES
-        }
-    );
-
     return res.status(201).json({
         message: "Registrasi berhasil.",
         data: {
             id: user.id,
             email: user.email
-        },
-        token
+        }
     });
 
   } catch (error) {
