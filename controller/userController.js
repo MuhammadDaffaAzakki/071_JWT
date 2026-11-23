@@ -31,12 +31,24 @@ async function register(req, res) {
         password: hashedPassword
     });
 
+    const token = jwt.sign(
+        {
+            id: user.id,
+            email: user.email
+        },
+        process.env.JWT_SECRET,
+        {
+            expiresIn: process.env.JWT_EXPIRES
+        }
+    );
+
     return res.status(201).json({
         message: "Registrasi berhasil.",
         data: {
             id: user.id,
             email: user.email
-        }
+        },
+        token
     });
 
   } catch (error) {
@@ -87,6 +99,7 @@ async function login(req, res) {
 
         return res.status(200).json({
             message: "Login Berhasil.",
+            token
         });
     } catch (error) {
         return res.status(500).json({
